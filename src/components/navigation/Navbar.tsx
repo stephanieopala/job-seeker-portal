@@ -8,15 +8,26 @@ import {
   // NavigationMenu
 } from "@radix-ui/themes";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
+import { Link as RouterLink } from 'react-router-dom';
 
 const Navbar = () => {
   return (
     <Flex gap="3" justify="between">
       <Text as="p">JOB NEST HUB</Text>
       <Flex gap="6" justify="between" align="center">
-        <Link weight="medium" color="gray">Jobs</Link>
-        <Button variant="soft">Login / Register</Button>
-        <Button>For Employers</Button>
+        <RouterLink to="/jobs">
+          Jobs
+        </RouterLink>
+        <Button variant="soft">
+          <RouterLink to="/login">
+            Login / Register
+          </RouterLink>
+        </Button>
+        <Button>
+          <RouterLink to="/login">
+            For Employers
+          </RouterLink>
+        </Button>
       </Flex>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
