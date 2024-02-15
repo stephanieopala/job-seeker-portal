@@ -1,11 +1,10 @@
 import Navbar from "../components/navigation/Navbar";
-import { Grid } from "@radix-ui/themes";
 
 const Home = () => {
   return (
-    <Grid pt="6" px={{ initial: "3", sm: "9" }}>
+    <div className="px-3 sm:px-20 py-4">
       <Navbar />
-    </Grid>
+    </div>
   )
 }
 
