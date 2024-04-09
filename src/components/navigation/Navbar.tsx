@@ -5,7 +5,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav>
+    <nav className="px-3 sm:px-20">
       <div className="flex justify-between">
         <p className="text-primary">JOB HUB NEST</p>
         <ul className="hidden sm:flex gap-x-4">
