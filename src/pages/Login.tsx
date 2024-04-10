@@ -1,3 +1,4 @@
+import { Link as RouterLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Footer from "../components/navigation/Footer"
 import Navbar from "../components/navigation/Navbar"
@@ -12,8 +13,8 @@ import {
   FormLabel,
   FormMessage
  } from "@/components/ui/form";
- import { Input } from "@/components/ui/input";
-  import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 const formSchema = z.object({
   username: z.string().min(2, { message: "Username is too short" }),
@@ -62,7 +63,7 @@ const Login = () => {
                   control={form.control}
                   name="password"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="mt-4">
                       <FormLabel>Password</FormLabel>
                       <FormControl>
                         <Input {...field} className="border-dark-gray" type="password"/>
@@ -72,6 +73,9 @@ const Login = () => {
                   )}
                 />
               </Form>
+              <p className="mt-4">Don&apos;t have an account?
+                <RouterLink to="/register" className="text-primary hover:underline"> Register</RouterLink>
+              </p>
             </CardContent>
             <CardFooter className="flex justify-end">
               {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}

@@ -1,6 +1,12 @@
+import Footer from "@/components/navigation/Footer"
+import Navbar from "@/components/navigation/Navbar"
+
 const Register = () => {
   return (
-    <div>Register</div>
+    <div className="flex flex-col h-screen justify-between">
+      <Navbar />
+      <Footer />
+    </div>
   )
 }
 
