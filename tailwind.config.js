@@ -25,6 +25,7 @@ module.exports = {
       // 'primary-light-two': '#66b2b2',
       'dark-gray': '#adadad',
       'white': '#fff',
+      'error': '#ff3333'
     },
     extend: {
       keyframes: {
