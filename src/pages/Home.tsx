@@ -5,7 +5,7 @@ import Footer from "../components/navigation/Footer";
 
 const Home = () => {
   return (
-    <div className="pt-4">
+    <div className="flex flex-col h-screen justify-between">
       <Navbar />
       <div className="flex flex-col gap-8 sm:gap-20 mt-6 px-3 sm:px-20">
         <section className="grid sm:grid-cols-2 py-10 gap-4 sm:gap-0">
