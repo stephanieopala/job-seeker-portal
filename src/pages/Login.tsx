@@ -1,8 +1,8 @@
 import { Link as RouterLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import Footer from "../components/navigation/Footer"
-import Navbar from "../components/navigation/Navbar"
-import { Card, CardHeader, CardContent, CardTitle, CardFooter } from "@/components/ui/card"
+import Footer from "../components/navigation/Footer";
+import Navbar from "../components/navigation/Navbar";
+import { Card, CardHeader, CardContent, CardTitle, CardFooter } from "@/components/ui/card";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -16,20 +16,20 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-const formSchema = z.object({
-  username: z.string().min(2, { message: "Username is too short" }),
-  password: z.string().min(8, { message: "Password is too short"})
+const loginSchema = z.object({
+  username: z.string({ required_error: "Username is required" }),
+  password: z.string({ required_error: "Password is required" })
 })
 
 const Login = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       username: "",
       password: ""
     }
   })
-  function onSubmit (values: z.infer<typeof formSchema>) {
+  function onSubmit (values: z.infer<typeof loginSchema>) {
     try {
       console.log('values', values);
     } catch (error) {
