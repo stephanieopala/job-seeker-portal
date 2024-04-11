@@ -2,6 +2,8 @@ import Navbar from "../components/navigation/Navbar";
 import SectionOneImage from '../assets/hero.svg';
 import SectionTwoImage from '../assets/hero-two.svg';
 import Footer from "../components/navigation/Footer";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
 const Home = () => {
   return (
@@ -16,7 +18,7 @@ const Home = () => {
             <h2 className="font-semibold text-3xl mb-4 text-center">Looking for vacancies? Find the right job for you</h2>
             <p className="py-4 text-center">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maxime perspiciatis ipsam dolores accusamus, incidunt error, saepe perferendis modi expedita vitae quia, debitis possimus? Repellendus consectetur fuga
               cumque, culpa officiis adipisci?</p>
-            <button className="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded">Search Jobs</button>
+            <Button className="bg-primary hover:bg-primary-dark text-white">Search Jobs<ArrowRight className="ml-4"/></Button>
           </div>
         </section>
         <section className="grid sm:grid-cols-2 gap-4 sm:gap-0 bg-primary-light py-10">
@@ -24,7 +26,7 @@ const Home = () => {
             <h2 className="font-semibold text-3xl text-center">Hire the best talent for your team</h2>
             <p className="py-4 text-center">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maxime perspiciatis ipsam dolores accusamus, incidunt error, saepe perferendis modi expedita vitae quia, debitis possimus? Repellendus consectetur fuga
               cumque, culpa officiis adipisci?</p>
-            <button className="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded">Hire Talent</button>
+            <Button className="bg-primary hover:bg-primary-dark text-white">Hire Talent</Button>
           </div>
           <div className="flex flex-col items-center justify-center">
             <img src={SectionOneImage} alt="lady looking at a device"/>
@@ -38,7 +40,7 @@ const Home = () => {
             <h2 className="font-semibold text-3xl mb-4 text-center">Looking for vacancies? Find the right job for you</h2>
             <p className="py-4 text-center">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maxime perspiciatis ipsam dolores accusamus, incidunt error, saepe perferendis modi expedita vitae quia, debitis possimus? Repellendus consectetur fuga
               cumque, culpa officiis adipisci?</p>
-            <button className="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded">Search Jobs</button>
+            <Button className="bg-primary hover:bg-primary-dark text-white">Search Jobs</Button>
           </div>
         </section>
       </div>
