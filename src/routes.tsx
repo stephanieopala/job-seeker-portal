@@ -15,12 +15,17 @@ const Loadable = (Component: any) => (props: JSX.IntrinsicAttributes) =>
 const Home = Loadable(lazy(() => import("./pages/Home")));
 const Login = Loadable(lazy(() => import("./pages/Login")));
 const Register = Loadable(lazy(() => import("./pages/Register")));
+const Jobs = Loadable(lazy(() => import("./pages/Jobs")));
 
 const routes: RouteObject[] = [
   //unauthenticated
   {
     path: '/',
     element: <Home />
+  },
+  {
+    path: 'jobs',
+    element: <Jobs />
   },
 
   //TODO: Add Guest Guard

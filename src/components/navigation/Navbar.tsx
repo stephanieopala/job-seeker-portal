@@ -1,53 +1,32 @@
-import {
-  Flex,
-  // Box,
-  Text,
-  Link,
-  Button,
-  DropdownMenu,
-  // NavigationMenu
-} from "@radix-ui/themes";
-import { HamburgerMenuIcon } from "@radix-ui/react-icons";
+import { useState } from "react";
 import { Link as RouterLink } from 'react-router-dom';
 
 const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <Flex gap="3" justify="between">
-      <Text as="p">JOB NEST HUB</Text>
-      <Flex gap="6" justify="between" align="center">
-        <RouterLink to="/jobs">
-          Jobs
-        </RouterLink>
-        <Button variant="soft">
-          <RouterLink to="/login">
-            Login / Register
-          </RouterLink>
-        </Button>
-        <Button>
-          <RouterLink to="/login">
-            For Employers
-          </RouterLink>
-        </Button>
-      </Flex>
-      <DropdownMenu.Root>
-        <DropdownMenu.Trigger>
-          <Button>
-            <HamburgerMenuIcon />
-          </Button>
-        </DropdownMenu.Trigger>
-        <DropdownMenu.Content>
-          <DropdownMenu.Item>
-            <Link weight="medium" color="gray">Jobs</Link>
-          </DropdownMenu.Item>
-          <DropdownMenu.Item>
-            <Button variant="soft">Login / Register</Button>
-          </DropdownMenu.Item>
-          <DropdownMenu.Item>
-            <Button>For Employers</Button>
-          </DropdownMenu.Item>
-        </DropdownMenu.Content>
-      </DropdownMenu.Root>
-    </Flex>
+    <nav className="py-4 px-3 sm:px-20">
+      <div className="flex justify-between">
+        <p className="text-primary"><RouterLink to="/">JOB HUB NEST</RouterLink></p>
+        <ul className="hidden sm:flex gap-x-4">
+          <li><RouterLink className='hover:text-primary font-semibold' to="/jobs">Jobs</RouterLink></li>
+          <li><RouterLink className='hover:text-primary font-semibold' to="/login">Login / Register</RouterLink></li>
+          <li>
+            <RouterLink className='hover:text-primary font-semibold' to="/login">For Employers</RouterLink>
+          </li>
+        </ul>
+        <div className="sm:hidden" onClick={() => setIsOpen(!isOpen)}>
+          <p>Menu</p>
+        </div>
+      </div>
+      <ul className={isOpen ? "flex flex-col sm:hidden" : "hidden"}>
+        <li><RouterLink className='hover:text-primary font-semibold' to="/jobs">Jobs</RouterLink></li>
+        <li><RouterLink className='hover:text-primary font-semibold' to="/login">Login / Register</RouterLink></li>
+        <li>
+          <RouterLink className='hover:text-primary font-semibold' to="/login">For Employers</RouterLink>
+        </li>
+      </ul>
+    </nav>
   )
 }
 
