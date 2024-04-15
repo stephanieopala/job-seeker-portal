@@ -1,5 +1,5 @@
-// import { useContext } from "react";
+import { useContext } from "react";
 
-// const useAuth = () => useContext();
+const useAuth = () => useContext();
 
-// export default useAuth;
+export default useAuth;

@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/select";
 
 const registerSchema = z.object({
-  username: z.string().min(2, { message: "Username is too short" }),
+  username: z.string().min(1, { message: "Username is required" }),
   password: z.string().min(8, { message: "Password must be at least 8 characters" }),
   confirmPassword: z.string().min(8, { message: "Password must be at least 8 characters" }),
   userType: z.string().min(2, "User Type is required")
