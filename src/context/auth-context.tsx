@@ -1,5 +1,5 @@
+import jwtAxios from "@/api/jwt-api";
 import { useEffect, useReducer, createContext } from "react";
-import { string } from "zod";
 
 type User = {
   username: string;
@@ -20,7 +20,14 @@ type InitializeAction = {
   }
 }
 
-type Action = | InitializeAction
+type LoginAction = {
+  type: 'LOGIN',
+  payload: {
+    user: User;
+  }
+}
+
+type Action = | InitializeAction | LoginAction
 
 const initialState = {
   isAuthenticated: false,
@@ -101,20 +108,34 @@ export const AuthProvider = ({ children }: {children: React.ReactNode}) => {
   }, []);
 
   const login = async (email: string, password: string): Promise<void> => {
-    console.log()
-  }
+    const body = {email, password};
+    const response = await jwtAxios.post('account/login', body);
+    console.log('response', response);
 
-  const register = async (username: string, password: string, confirmPassword: string, userType: string ) => {
-    console.log()
-  }
+    // const { accessToken } = response.data.data;
+    // const user = {};
 
-  const logout = async () => {
-    console.log()
-  }
+    // localStorage.setItem('user', JSON.stringify(user));
+    // setAuthToken(accessToken);
+    dispatch({
+      type: 'LOGIN',
+      payload: {
+        user
+      }
+    });
+  };
+
+  // const register = async (username: string, password: string, confirmPassword: string, userType: string ) => {
+  //   console.log()
+  // }
+
+  // const logout = async () => {
+  //   console.log()
+  // }
 
   return (
     <AuthContext.Provider
-      value={{...state, login, register, logout}}
+      value={{...state, login, register}}
     >
       {children}
     </AuthContext.Provider>
