@@ -15,10 +15,11 @@ import {
  } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+// import jwtAxios from "@/api/jwt-api";
 
 const loginSchema = z.object({
-  username: z.string({ required_error: "Username is required" }),
-  password: z.string({ required_error: "Password is required" })
+  username: z.string().min(1, "Username is required"),
+  password: z.string().min(1, "Password is required")
 })
 
 const Login = () => {
@@ -29,9 +30,19 @@ const Login = () => {
       password: ""
     }
   })
-  function onSubmit (values: z.infer<typeof loginSchema>) {
+  const onSubmit = (values: z.infer<typeof loginSchema>) => {
     try {
       console.log('values', values);
+      // const body = {username: values.username, password: values.password};
+      // console.log('body', body);
+
+      // const formData = new FormData();
+      // formData.append('csrfmiddlewaretoken', '');
+      // formData.append('username', values.username);
+      // formData.append('password', values.password);
+      // console.log('form data', formData);
+      //  const response = await jwtAxios.post('account/login/', formData);
+      // console.log('response', response);
     } catch (error) {
       console.log(error);
     }
