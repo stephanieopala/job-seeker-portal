@@ -5,11 +5,11 @@ export const useDialog = () => {
 
   const handleOpen = () => {
     setOpen(true);
-  }
+  };
 
   const handleClose = () => {
     setOpen(false);
-  }
+  };
 
-  return [open, handleOpen, handleClose]
-}
+  return [open, handleOpen, handleClose];
+};

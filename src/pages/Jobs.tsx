@@ -1,5 +1,5 @@
-import Footer from "@/components/navigation/Footer"
-import Navbar from "@/components/navigation/Navbar"
+import Footer from '@/components/navigation/Footer';
+import Navbar from '@/components/navigation/Navbar';
 // import {
 //   Table,
 //   TableBody,
@@ -13,12 +13,10 @@ const Jobs = () => {
   return (
     <div className="flex flex-col h-screen justify-between">
       <Navbar />
-        <div>
-
-        </div>
+      <div></div>
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default Jobs
+export default Jobs;
