@@ -5,9 +5,7 @@ import routes from './routes';
 
 function App() {
   const content = useRoutes(routes);
-  return (
-    <>{content}</>
-  )
+  return <>{content}</>;
 }
 
-export default App
+export default App;
