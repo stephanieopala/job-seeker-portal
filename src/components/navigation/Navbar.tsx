@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link as RouterLink } from 'react-router-dom';
+import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -7,27 +7,91 @@ const Navbar = () => {
   return (
     <nav className="py-4 px-3 sm:px-20">
       <div className="flex justify-between">
-        <p className="text-primary"><RouterLink to="/">JOB HUB NEST</RouterLink></p>
+        <p className="text-primary">
+          <NavLink to="/">JOB HUB NEST</NavLink>
+        </p>
         <ul className="hidden sm:flex gap-x-4">
-          <li><RouterLink className='hover:text-primary font-semibold' to="/jobs">Jobs</RouterLink></li>
-          <li><RouterLink className='hover:text-primary font-semibold' to="/login">Login / Register</RouterLink></li>
           <li>
-            <RouterLink className='hover:text-primary font-semibold' to="/login">For Employers</RouterLink>
+            <NavLink
+              className={({ isActive }) =>
+                isActive
+                  ? 'text-primary font-semibold'
+                  : 'hover:text-primary font-semibold'
+              }
+              to="/jobs"
+            >
+              Jobs
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              className={({ isActive }) =>
+                isActive
+                  ? 'text-primary font-semibold'
+                  : 'hover:text-primary font-semibold'
+              }
+              to="/login"
+            >
+              Login / Register
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              className={({ isActive }) =>
+                isActive
+                  ? 'text-primary font-semibold'
+                  : 'hover:text-primary font-semibold'
+              }
+              to="/register"
+            >
+              For Employers
+            </NavLink>
           </li>
         </ul>
         <div className="sm:hidden" onClick={() => setIsOpen(!isOpen)}>
           <p>Menu</p>
         </div>
       </div>
-      <ul className={isOpen ? "flex flex-col sm:hidden" : "hidden"}>
-        <li><RouterLink className='hover:text-primary font-semibold' to="/jobs">Jobs</RouterLink></li>
-        <li><RouterLink className='hover:text-primary font-semibold' to="/login">Login / Register</RouterLink></li>
+      <ul className={isOpen ? 'flex flex-col sm:hidden' : 'hidden'}>
         <li>
-          <RouterLink className='hover:text-primary font-semibold' to="/login">For Employers</RouterLink>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? 'text-primary font-semibold'
+                : 'hover:text-primary font-semibold'
+            }
+            to="/jobs"
+          >
+            Jobs
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? 'text-primary font-semibold'
+                : 'hover:text-primary font-semibold'
+            }
+            to="/login"
+          >
+            Login / Register
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? 'text-primary font-semibold'
+                : 'hover:text-primary font-semibold'
+            }
+            to="/register"
+          >
+            For Employers
+          </NavLink>
         </li>
       </ul>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

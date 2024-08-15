@@ -6,16 +6,25 @@ module.exports = {
     'plugin:@typescript-eslint/recommended-type-checked',
     'plugin:react-hooks/recommended',
     'plugin:react/recommended',
-    'plugin:react/jsx-runtime'
+    'plugin:react/jsx-runtime',
+    'prettier'
   ],
-  ignorePatterns: ['dist', '.eslintrc.cjs'],
+  ignorePatterns: ['dist', '.eslintrc.cjs', 'vite.config.ts', 'commitlint.config.cjs'],
   parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh'],
+  plugins: ['react-refresh', 'react', '@typescript-eslint', 'prettier'],
   rules: {
-    'react-refresh/only-export-components': [
-      'warn',
-      { allowConstantExport: true },
-    ],
+    'react/react-in-jsx-scope': 'off',
+    'react/prop-types': 'off',
+    // 'react-refresh/only-export-components': [
+    //   'warn',
+    //   { allowConstantExport: true },
+    // ],
+    'prettier/prettier': 'error',
+  },
+  settings: {
+    react: {
+      version: 'detect',
+    }
   },
   parserOptions: {
     ecmaVersion: 'latest',
