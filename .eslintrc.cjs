@@ -19,7 +19,11 @@ module.exports = {
     //   'warn',
     //   { allowConstantExport: true },
     // ],
-    'prettier/prettier': 'error',
+    'prettier/prettier': ['error',
+      {
+        "endOfLine": "auto"
+      },
+    ]
   },
   settings: {
     react: {

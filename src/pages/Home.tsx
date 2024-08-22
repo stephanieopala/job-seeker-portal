@@ -1,6 +1,6 @@
 import Navbar from '../components/navigation/Navbar';
-import SectionOneImage from '../assets/hero.svg';
-import SectionTwoImage from '../assets/hero-two.svg';
+import SectionOneImage from '../assets/recruitment.png';
+import SectionTwoImage from '../assets/contract.png';
 import Footer from '../components/navigation/Footer';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
@@ -46,7 +46,11 @@ const Home = () => {
             </Button>
           </div>
           <div className="flex flex-col items-center justify-center">
-            <img src={SectionOneImage} alt="lady looking at a device" />
+            <img
+              src={SectionOneImage}
+              alt="lady looking at a device"
+              className="h-full w-full"
+            />
           </div>
         </section>
         <section className="grid sm:grid-cols-2 py-10 gap-4 sm:gap-0">
