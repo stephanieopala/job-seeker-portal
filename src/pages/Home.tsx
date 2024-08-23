@@ -43,6 +43,7 @@ const Home = () => {
             </p>
             <Button className="bg-primary hover:bg-primary-dark text-white">
               Hire Talent
+              <ArrowRight className="ml-4" />
             </Button>
           </div>
           <div className="flex flex-col items-center justify-center">
@@ -53,7 +54,7 @@ const Home = () => {
             />
           </div>
         </section>
-        <section className="grid sm:grid-cols-2 py-10 gap-4 sm:gap-0">
+        {/* <section className="grid sm:grid-cols-2 py-10 gap-4 sm:gap-0">
           <div className="flex flex-col items-center justify-center">
             <img src={SectionTwoImage} alt="man looking at a pc" />
           </div>
@@ -69,9 +70,10 @@ const Home = () => {
             </p>
             <Button className="bg-primary hover:bg-primary-dark text-white">
               Search Jobs
+              <ArrowRight className="ml-4" />
             </Button>
           </div>
-        </section>
+        </section> */}
       </div>
       <Footer />
     </div>

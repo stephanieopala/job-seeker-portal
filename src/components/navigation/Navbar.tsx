@@ -5,12 +5,24 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="py-4 px-3 sm:px-20">
+    <nav className="pt-6 pb-4 px-3 sm:px-20">
       <div className="flex justify-between">
         <p className="text-primary">
-          <NavLink to="/">JOB HUB NEST</NavLink>
+          <NavLink to="/">Kwetu Jobs</NavLink>
         </p>
         <ul className="hidden sm:flex gap-x-4">
+          <li>
+            <NavLink
+              className={({ isActive }) =>
+                isActive
+                  ? 'text-primary font-semibold'
+                  : 'hover:text-primary font-semibold'
+              }
+              to="/"
+            >
+              Home
+            </NavLink>
+          </li>
           <li>
             <NavLink
               className={({ isActive }) =>
