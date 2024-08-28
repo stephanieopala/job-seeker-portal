@@ -8,7 +8,7 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  // TableHeader,
+  TableHeader,
   TableRow,
 } from '@/components/ui/table';
 import Skeleton from '@/components/Skeleton';
@@ -29,6 +29,7 @@ const Jobs = () => {
     try {
       setLoading(true);
       const { data } = await supabase.from('jobs').select();
+      console.log('jobs', data);
       setJobs(data);
     } catch (error) {
       if (error instanceof Error) {
@@ -51,15 +52,17 @@ const Jobs = () => {
       <Navbar />
       <div className="w-full flex flex-col justify-center items-center mb-10 border-dark-gray border">
         <Table>
-          <TableHead>
+          <TableHeader>
             <TableRow>
-              <TableCell>Title</TableCell>
+              <TableHead>Title</TableHead>
+              <TableHead>Location</TableHead>
             </TableRow>
-          </TableHead>
+          </TableHeader>
           <TableBody>
             {jobs?.map((job) => (
               <TableRow key={job.id}>
                 <TableCell>{job.title}</TableCell>
+                <TableCell>{job.location}</TableCell>
               </TableRow>
             ))}
           </TableBody>

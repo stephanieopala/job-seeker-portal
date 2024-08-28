@@ -47,7 +47,7 @@ const Navbar = () => {
               Login / Register
             </NavLink>
           </li>
-          <li>
+          {/* <li>
             <NavLink
               className={({ isActive }) =>
                 isActive
@@ -58,7 +58,7 @@ const Navbar = () => {
             >
               For Employers
             </NavLink>
-          </li>
+          </li> */}
         </ul>
         <div className="sm:hidden" onClick={() => setIsOpen(!isOpen)}>
           <p>Menu</p>
@@ -89,7 +89,7 @@ const Navbar = () => {
             Login / Register
           </NavLink>
         </li>
-        <li>
+        {/* <li>
           <NavLink
             className={({ isActive }) =>
               isActive
@@ -100,7 +100,7 @@ const Navbar = () => {
           >
             For Employers
           </NavLink>
-        </li>
+        </li> */}
       </ul>
     </nav>
   );

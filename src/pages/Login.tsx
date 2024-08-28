@@ -1,5 +1,6 @@
 import { Link as RouterLink } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import useAuth from '@/hooks/use-auth';
 import Footer from '../components/navigation/Footer';
 import Navbar from '../components/navigation/Navbar';
 import {
@@ -21,41 +22,34 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-// import jwtAxios from "@/api/jwt-api";
 
 const loginSchema = z.object({
-  username: z.string().min(1, 'Username is required'),
+  email: z.string().min(1, 'Email is required').email(),
   password: z.string().min(1, 'Password is required'),
 });
 
 const Login = () => {
+  const { login } = useAuth();
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      username: '',
+      email: '',
       password: '',
     },
   });
-  // const onSubmit = (values: z.infer<typeof loginSchema>) => {
-  //   try {
-  //     // const body = {username: values.username, password: values.password};
-  //     // console.log('body', body);
 
-  //     // const formData = new FormData();
-  //     // formData.append('csrfmiddlewaretoken', '');
-  //     // formData.append('username', values.username);
-  //     // formData.append('password', values.password);
-  //     // console.log('form data', formData);
-  //     //  const response = await jwtAxios.post('account/login/', formData);
-  //     // console.log('response', response);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const onSubmit = async (values: z.infer<typeof loginSchema>) => {
+    try {
+      const { data } = await login(values.email, values.password);
+      console.log('response', data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="flex flex-col h-screen justify-between">
       <Navbar />
-      <div className="w-full h-full flex flex-col justify-center items-center">
+      <div className="w-full h-auto flex flex-col justify-center items-center">
         <Card className="border-dark-gray w-1/2">
           <CardHeader>
             <CardTitle>Login</CardTitle>
@@ -64,14 +58,18 @@ const Login = () => {
             <Form {...form}>
               <FormField
                 control={form.control}
-                name="username"
+                name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel>Email</FormLabel>
                     <FormControl>
                       <Input {...field} className="border-dark-gray" />
                     </FormControl>
-                    <FormMessage className="text-error" />
+                    {form.formState.errors.email && (
+                      <FormMessage className="text-error">
+                        {form.formState.errors.email.message}
+                      </FormMessage>
+                    )}
                   </FormItem>
                 )}
               />
@@ -88,7 +86,11 @@ const Login = () => {
                         type="password"
                       />
                     </FormControl>
-                    <FormMessage className="text-error" />
+                    {form.formState.errors.password && (
+                      <FormMessage className="text-error">
+                        {form.formState.errors.password.message}
+                      </FormMessage>
+                    )}
                   </FormItem>
                 )}
               />
@@ -106,7 +108,8 @@ const Login = () => {
           </CardContent>
           <CardFooter className="flex justify-end">
             <Button
-              // onClick={form.handleSubmit(onSubmit)}
+              // eslint-disable-next-line @typescript-eslint/no-misused-promises
+              onClick={form.handleSubmit(onSubmit)}
               className="bg-primary text-white hover:bg-primary-dark"
             >
               Login

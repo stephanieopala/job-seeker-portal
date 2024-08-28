@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { supabase } from '@/lib/supabaseClient';
+import useAuth from '@/hooks/use-auth';
 import Footer from '../components/navigation/Footer';
 import Navbar from '../components/navigation/Navbar';
 import {
@@ -52,6 +52,7 @@ const registerSchema = z
   );
 
 const Register = () => {
+  const { register } = useAuth();
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -66,18 +67,26 @@ const Register = () => {
   const onSubmit = async (values: z.infer<typeof registerSchema>) => {
     try {
       console.log('values', values);
-      const { data, error } = await supabase.auth.signUp({
-        email: values.email,
-        password: values.password,
-        options: {
-          data: {
-            full_name: values.fullName,
-            role: values.userType,
-            avatar_url: '',
-          },
-        },
-      });
-      console.log(error, data);
+      const avatar_url = null;
+      await register(
+        values.email,
+        values.password,
+        values.fullName,
+        values.userType,
+        avatar_url
+      );
+      // const { data, error } = await supabase.auth.signUp({
+      //   email: values.email,
+      //   password: values.password,
+      //   options: {
+      //     data: {
+      //       full_name: values.fullName,
+      //       role: values.userType,
+      //       avatar_url: null,
+      //     },
+      //   },
+      // });
+      // console.log(error, data);
     } catch (error) {
       if (error instanceof Error) {
         console.log(error);
