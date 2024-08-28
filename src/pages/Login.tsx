@@ -40,8 +40,8 @@ const Login = () => {
 
   const onSubmit = async (values: z.infer<typeof loginSchema>) => {
     try {
-      const { data } = await login(values.email, values.password);
-      console.log('response', data);
+      const response = await login(values.email, values.password);
+      console.log('response', response);
     } catch (error) {
       console.log(error);
     }

@@ -31,7 +31,7 @@ interface AuthContextType extends State {
     email: string,
     password: string
   ) => Promise<LoginReturnType | AuthError | null>;
-  // logout: () => Promise<void>;
+
   register: (
     email: string,
     password: string,
@@ -39,6 +39,8 @@ interface AuthContextType extends State {
     userType: string,
     avatar_url: string | null
   ) => Promise<RegisterReturnType | AuthError | null>;
+
+  logout: () => Promise<AuthError | undefined>;
 }
 
 type InitializeAction = {
@@ -62,6 +64,13 @@ type LoginAction = {
     user: User | null;
   };
 };
+
+// type LogoutAction = {
+//   type: 'LOGOUT';
+//   payload: {
+//     user: null;
+//   };
+// };
 
 type Action = InitializeAction | RegisterAction | LoginAction;
 
@@ -116,7 +125,10 @@ const AuthContext = createContext<AuthContextType>({
   register: async () => {
     throw new Error('register function not implemented');
   },
-  //logout: Promise.resolve()
+  // eslint-disable-next-line @typescript-eslint/require-await
+  logout: async () => {
+    throw new Error('register function not implemented');
+  },
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -124,6 +136,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const initialize = () => {
+      console.log('initialize running');
       try {
         const { data } = supabase.auth.onAuthStateChange((event, session) => {
           if (event === 'SIGNED_OUT') {
@@ -225,12 +238,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
   };
 
-  // const logout = async () => {
-  //   console.log()
-  // }
+  const logout = async () => {
+    const { error } = await supabase.auth.signOut();
+    dispatch({
+      type: 'INITIALIZE',
+      payload: {
+        isAuthenticated: false,
+        user: null,
+      },
+    });
+    if (error) {
+      return error;
+    }
+  };
 
   return (
-    <AuthContext.Provider value={{ ...state, login, register }}>
+    <AuthContext.Provider value={{ ...state, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );
