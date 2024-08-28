@@ -1,26 +1,11 @@
 import { useEffect, useReducer, createContext } from 'react';
 import { supabase } from '@/lib/supabaseClient';
-import { User, Session, AuthError } from '@supabase/supabase-js';
-
-type LoginReturnType =
-  | {
-      user: User;
-      session: Session;
-    }
-  | {
-      user: null;
-      session: null;
-    };
-
-type RegisterReturnType =
-  | {
-      user: User;
-      session: Session | null;
-    }
-  | {
-      user: null;
-      session: null;
-    };
+import {
+  User,
+  AuthTokenResponsePassword,
+  AuthResponse,
+  AuthError,
+} from '@supabase/supabase-js';
 interface State {
   isInitialized: boolean;
   isAuthenticated: boolean;
@@ -30,7 +15,7 @@ interface AuthContextType extends State {
   login: (
     email: string,
     password: string
-  ) => Promise<LoginReturnType | AuthError | null>;
+  ) => Promise<AuthTokenResponsePassword>;
 
   register: (
     email: string,
@@ -38,7 +23,7 @@ interface AuthContextType extends State {
     fullName: string,
     userType: string,
     avatar_url: string | null
-  ) => Promise<RegisterReturnType | AuthError | null>;
+  ) => Promise<AuthResponse>;
 
   logout: () => Promise<AuthError | undefined>;
 }
@@ -138,6 +123,26 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const initialize = () => {
       console.log('initialize running');
       try {
+        // supabase.auth.getSession().then(({ data: { session } }) => {
+        //   if (session) {
+        //     dispatch({
+        //       type: 'INITIALIZE',
+        //       payload: {
+        //         isAuthenticated: true,
+        //         user: session.user,
+        //       },
+        //     });
+        //   } else {
+        //     dispatch({
+        //       type: 'INITIALIZE',
+        //       payload: {
+        //         isAuthenticated: false,
+        //         user: null,
+        //       },
+        //     });
+        //   }
+        // });
+
         const { data } = supabase.auth.onAuthStateChange((event, session) => {
           if (event === 'SIGNED_OUT') {
             dispatch({
@@ -175,7 +180,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const login = async (email: string, password: string) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const response = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -183,21 +188,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     dispatch({
       type: 'LOGIN',
       payload: {
-        user: data.user,
+        user: response.data.user,
       },
     });
 
-    if (error) {
-      return error;
-    }
+    // if (error) {
+    //   return error;
+    // }
 
-    if (!data || !data.user) {
-      return null;
-    }
-    return {
-      user: data.user,
-      session: data.session,
-    };
+    // if (!data || !data.user) {
+    //   return null;
+    // }
+    // return {
+    //   user: data.user,
+    //   session: data.session,
+    // };
+    return response;
   };
 
   const register = async (
@@ -207,7 +213,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     userType: string,
     avatar_url: string | null
   ) => {
-    const { data, error } = await supabase.auth.signUp({
+    const response = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -222,20 +228,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     dispatch({
       type: 'REGISTER',
       payload: {
-        user: data.user,
+        user: response.data.user,
       },
     });
-    if (error) {
-      return error;
-    }
+    // if (error) {
+    //   return error;
+    // }
 
-    if (!data || !data.user) {
-      return null;
-    }
-    return {
-      user: data.user,
-      session: data.session,
-    };
+    // if (!data || !data.user) {
+    //   return null;
+    // }
+    return response;
   };
 
   const logout = async () => {

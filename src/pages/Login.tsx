@@ -22,6 +22,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { AuthApiError } from '@supabase/supabase-js';
+import toast from 'react-hot-toast';
 
 const loginSchema = z.object({
   email: z.string().min(1, 'Email is required').email(),
@@ -30,6 +32,7 @@ const loginSchema = z.object({
 
 const Login = () => {
   const { login } = useAuth();
+  // const navigate = useNavigate();
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -40,8 +43,15 @@ const Login = () => {
 
   const onSubmit = async (values: z.infer<typeof loginSchema>) => {
     try {
-      const response = await login(values.email, values.password);
-      console.log('response', response);
+      const { error } = await login(values.email, values.password);
+      if (error) {
+        if (error instanceof AuthApiError) {
+          toast.error(error.message);
+        }
+      } else {
+        toast.success('Login successful');
+        // navigate('/dashboard');
+      }
     } catch (error) {
       console.log(error);
     }
