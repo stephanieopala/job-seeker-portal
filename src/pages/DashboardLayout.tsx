@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import useAuth from '@/hooks/use-auth';
-const EmployerDashboard = () => {
+const DashboardLayout = () => {
   const { logout } = useAuth();
   const handleLogout = async () => {
     try {
@@ -17,4 +17,4 @@ const EmployerDashboard = () => {
   );
 };
 
-export default EmployerDashboard;
+export default DashboardLayout;
