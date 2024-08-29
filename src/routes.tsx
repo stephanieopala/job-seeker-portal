@@ -39,7 +39,7 @@ const routes: RouteObject[] = [
     element: <Register />,
   },
 
-  //authenticated TODO: Add AuthGuard
+  //authenticated
   {
     path: 'dashboard',
     element: (

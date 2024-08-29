@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { useEffect, useState } from 'react';
 import Footer from '@/components/navigation/Footer';
@@ -14,7 +13,6 @@ import {
 } from '@/components/ui/table';
 import Skeleton from '@/components/Skeleton';
 import { Database } from '@/types/supabase';
-import useAuth from '@/hooks/use-auth';
 
 const Jobs = () => {
   const [jobs, setJobs] = useState<
@@ -22,15 +20,6 @@ const Jobs = () => {
   >([]);
   const [errorMsg, setErrorMsg] = useState('');
   const [loading, setLoading] = useState(false);
-  const { logout } = useAuth();
-
-  const handleLogout = async () => {
-    try {
-      await logout();
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   useEffect(() => {
     getJobs();
@@ -61,7 +50,6 @@ const Jobs = () => {
   return (
     <div className="flex flex-col h-screen justify-between">
       <Navbar />
-      <button onClick={handleLogout}>Logout</button>
       <div className="w-full flex flex-col justify-center items-center mb-10 border-dark-gray border">
         <Table>
           <TableHeader>

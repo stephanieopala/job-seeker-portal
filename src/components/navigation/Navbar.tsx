@@ -72,6 +72,18 @@ const Navbar = () => {
                 ? 'text-primary font-semibold'
                 : 'hover:text-primary font-semibold'
             }
+            to="/"
+          >
+            Home
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? 'text-primary font-semibold'
+                : 'hover:text-primary font-semibold'
+            }
             to="/jobs"
           >
             Jobs

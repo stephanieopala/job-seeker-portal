@@ -1,4 +1,4 @@
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import useAuth from '@/hooks/use-auth';
 import Footer from '../components/navigation/Footer';
@@ -32,7 +32,7 @@ const loginSchema = z.object({
 
 const Login = () => {
   const { login } = useAuth();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -50,7 +50,7 @@ const Login = () => {
         }
       } else {
         toast.success('Login successful');
-        // navigate('/dashboard');
+        navigate('/dashboard');
       }
     } catch (error) {
       console.log(error);
