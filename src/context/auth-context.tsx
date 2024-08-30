@@ -1,142 +1,265 @@
-// import jwtAxios from '@/api/jwt-api';
-// import { useEffect, useReducer, createContext } from 'react';
+import { useEffect, useReducer, createContext } from 'react';
+import { supabase } from '@/lib/supabaseClient';
+import {
+  User,
+  AuthTokenResponsePassword,
+  AuthResponse,
+  AuthError,
+} from '@supabase/supabase-js';
+interface State {
+  isInitialized: boolean;
+  isAuthenticated: boolean;
+  user: User | null;
+}
+interface AuthContextType extends State {
+  login: (
+    email: string,
+    password: string
+  ) => Promise<AuthTokenResponsePassword>;
 
-// type User = {
-//   username: string;
-//   // [key: string]: any;
-// };
+  register: (
+    email: string,
+    password: string,
+    fullName: string,
+    userType: string,
+    avatar_url: string | null
+  ) => Promise<AuthResponse>;
 
-// interface State {
-//   isInitialized: boolean;
-//   isAuthenticated: boolean;
-//   user: User | null;
-// }
+  logout: () => Promise<AuthError | undefined>;
+}
 
-// type InitializeAction = {
-//   type: 'INITIALIZE';
+type InitializeAction = {
+  type: 'INITIALIZE';
+  payload: {
+    isAuthenticated: boolean;
+    user: User | null;
+  };
+};
+
+type RegisterAction = {
+  type: 'REGISTER';
+  payload: {
+    user: User | null;
+  };
+};
+
+type LoginAction = {
+  type: 'LOGIN';
+  payload: {
+    user: User | null;
+  };
+};
+
+// type LogoutAction = {
+//   type: 'LOGOUT';
 //   payload: {
-//     isAuthenticated: boolean;
-//     user: User | null;
+//     user: null;
 //   };
 // };
 
-// type LoginAction = {
-//   type: 'LOGIN';
-//   payload: {
-//     user: User;
-//   };
-// };
+type Action = InitializeAction | RegisterAction | LoginAction;
 
-// type Action = InitializeAction | LoginAction;
+const initialState = {
+  isAuthenticated: false,
+  isInitialized: false,
+  user: null,
+};
 
-// const initialState = {
-//   isAuthenticated: false,
-//   isInitialized: false,
-//   user: null,
-// };
+const handlers: Record<string, (state: State, action: Action) => State> = {
+  INITIALIZE: (state, action): State => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    const { isAuthenticated, user } = action.payload;
+    return {
+      ...state,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      isAuthenticated,
+      isInitialized: true,
+      user,
+    };
+  },
+  REGISTER: (state, action): State => {
+    const { user } = action.payload;
 
-// const handlers: Record<string, (state: State, action: Action) => State> = {
-//   INITIALIZE: (state, action): State => {
-//     const { isAuthenticated, user } = action.payload;
-//     return {
-//       ...state,
-//       isAuthenticated,
-//       isInitialized: true,
-//       user,
-//     };
-//   },
-//   LOGIN: (state, action) => {
-//     const { user } = action.payload;
-//     return {
-//       ...state,
-//       isAuthenticated: true,
-//       user,
-//     };
-//   },
-// };
+    return {
+      ...state,
+      isAuthenticated: !!user, //true
+      user,
+    };
+  },
+  LOGIN: (state, action) => {
+    const { user } = action.payload;
+    return {
+      ...state,
+      isAuthenticated: !!user, //true is only true id there's a user
+      user,
+    };
+  },
+};
 
-// const reducer = (state: State, action: Action): State =>
-//   handlers[action.type] ? handlers[action.type](state, action) : state;
+const reducer = (state: State, action: Action): State =>
+  handlers[action.type] ? handlers[action.type](state, action) : state;
 
-// //create authcontext
-// const AuthContext = createContext({
-//   ...initialState,
-//   login: () => Promise.resolve(),
-//   register: () => Promise.resolve(),
-//   logout: () => Promise.resolve(),
-// });
+const AuthContext = createContext<AuthContextType>({
+  ...initialState,
+  // eslint-disable-next-line @typescript-eslint/require-await
+  login: async () => {
+    throw new Error('login function not implemented');
+  },
+  // eslint-disable-next-line @typescript-eslint/require-await
+  register: async () => {
+    throw new Error('register function not implemented');
+  },
+  // eslint-disable-next-line @typescript-eslint/require-await
+  logout: async () => {
+    throw new Error('register function not implemented');
+  },
+});
 
-// export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-//   const [state, dispatch] = useReducer(reducer, initialState);
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-//   useEffect(() => {
-//     const initialize = async (): Promise<void> => {
-//       try {
-//         const loggedInUser = window.localStorage.getItem('user');
-//         if (loggedInUser) {
-//           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-//           const user: User = await JSON.parse(loggedInUser);
-//           dispatch({
-//             type: 'INITIALIZE',
-//             payload: {
-//               isAuthenticated: true,
-//               user,
-//             },
-//           });
-//         } else {
-//           dispatch({
-//             type: 'INITIALIZE',
-//             payload: {
-//               isAuthenticated: false,
-//               user: null,
-//             },
-//           });
-//         }
-//       } catch (error) {
-//         console.log(error);
-//         dispatch({
-//           type: 'INITIALIZE',
-//           payload: {
-//             isAuthenticated: false,
-//             user: null,
-//           },
-//         });
-//       }
-//     };
-//     void initialize();
-//   }, []);
+  useEffect(() => {
+    const initialize = () => {
+      console.log('initialize running');
+      try {
+        // supabase.auth.getSession().then(({ data: { session } }) => {
+        //   if (session) {
+        //     dispatch({
+        //       type: 'INITIALIZE',
+        //       payload: {
+        //         isAuthenticated: true,
+        //         user: session.user,
+        //       },
+        //     });
+        //   } else {
+        //     dispatch({
+        //       type: 'INITIALIZE',
+        //       payload: {
+        //         isAuthenticated: false,
+        //         user: null,
+        //       },
+        //     });
+        //   }
+        // });
 
-//   const login = async (email: string, password: string): Promise<void> => {
-//     const body = { email, password };
-//     const response = await jwtAxios.post('account/login', body);
-//     console.log('response', response);
+        const { data } = supabase.auth.onAuthStateChange((event, session) => {
+          if (event === 'SIGNED_OUT') {
+            dispatch({
+              type: 'INITIALIZE',
+              payload: {
+                isAuthenticated: false,
+                user: null,
+              },
+            });
+          } else if (session) {
+            dispatch({
+              type: 'INITIALIZE',
+              payload: {
+                isAuthenticated: true,
+                user: session.user,
+              },
+            });
+          }
+        });
+        return () => {
+          data.subscription.unsubscribe();
+        };
+      } catch (error) {
+        console.log(error);
+        dispatch({
+          type: 'INITIALIZE',
+          payload: {
+            isAuthenticated: false,
+            user: null,
+          },
+        });
+      }
+    };
+    void initialize();
+  }, []);
 
-//     // const { accessToken } = response.data.data;
-//     // const user = {};
+  const login = async (email: string, password: string) => {
+    const response = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-//     // localStorage.setItem('user', JSON.stringify(user));
-//     // setAuthToken(accessToken);
-//     dispatch({
-//       type: 'LOGIN',
-//       payload: {
-//         user,
-//       },
-//     });
-//   };
+    dispatch({
+      type: 'LOGIN',
+      payload: {
+        user: response.data.user,
+      },
+    });
 
-//   // const register = async (username: string, password: string, confirmPassword: string, userType: string ) => {
-//   //   console.log()
-//   // }
+    // if (error) {
+    //   return error;
+    // }
 
-//   // const logout = async () => {
-//   //   console.log()
-//   // }
+    // if (!data || !data.user) {
+    //   return null;
+    // }
+    // return {
+    //   user: data.user,
+    //   session: data.session,
+    // };
+    return response;
+  };
 
-//   return (
-//     <AuthContext.Provider value={{ ...state, login, register }}>
-//       {children}
-//     </AuthContext.Provider>
-//   );
-// };
+  const register = async (
+    email: string,
+    password: string,
+    fullName: string,
+    userType: string,
+    avatar_url: string | null
+  ) => {
+    const response = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: fullName,
+          role: userType,
+          avatar_url,
+        },
+      },
+    });
 
-// export default AuthContext;
+    dispatch({
+      type: 'REGISTER',
+      payload: {
+        user: response.data.user,
+      },
+    });
+    // if (error) {
+    //   return error;
+    // }
+
+    // if (!data || !data.user) {
+    //   return null;
+    // }
+    return response;
+  };
+
+  const logout = async () => {
+    const { error } = await supabase.auth.signOut();
+    dispatch({
+      type: 'INITIALIZE',
+      payload: {
+        isAuthenticated: false,
+        user: null,
+      },
+    });
+    if (error) {
+      return error;
+    }
+  };
+
+  return (
+    <AuthContext.Provider value={{ ...state, login, register, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export default AuthContext;

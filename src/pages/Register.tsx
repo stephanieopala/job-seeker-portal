@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import useAuth from '@/hooks/use-auth';
 import Footer from '../components/navigation/Footer';
 import Navbar from '../components/navigation/Navbar';
 import {
@@ -30,7 +31,8 @@ import {
 
 const registerSchema = z
   .object({
-    username: z.string().min(1, { message: 'Username is required' }),
+    fullName: z.string().min(1, { message: 'Name is required' }),
+    email: z.string().min(1, { message: 'Email is required' }).email(),
     password: z
       .string()
       .min(8, { message: 'Password must be at least 8 characters' }),
@@ -50,26 +52,52 @@ const registerSchema = z
   );
 
 const Register = () => {
+  const { register } = useAuth();
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      username: '',
+      fullName: '',
+      email: '',
       password: '',
       confirmPassword: '',
       userType: '',
     },
+    mode: 'all',
   });
-  // function onSubmit(values: z.infer<typeof registerSchema>) {
-  //   try {
-  //     console.log('values', values);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
+  const onSubmit = async (values: z.infer<typeof registerSchema>) => {
+    try {
+      console.log('values', values);
+      const avatar_url = null;
+      await register(
+        values.email,
+        values.password,
+        values.fullName,
+        values.userType,
+        avatar_url
+      );
+      // const { data, error } = await supabase.auth.signUp({
+      //   email: values.email,
+      //   password: values.password,
+      //   options: {
+      //     data: {
+      //       full_name: values.fullName,
+      //       role: values.userType,
+      //       avatar_url: null,
+      //     },
+      //   },
+      // });
+      // console.log(error, data);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(error);
+      }
+    }
+  };
+
   return (
     <div className="flex flex-col h-screen justify-between">
       <Navbar />
-      <div className="w-full h-full flex flex-col justify-center items-center mb-10">
+      <div className="w-full h-auto flex flex-col justify-center items-center mb-10">
         <Card className="border-dark-gray w-1/2">
           <CardHeader>
             <CardTitle>Register</CardTitle>
@@ -78,14 +106,39 @@ const Register = () => {
             <Form {...form}>
               <FormField
                 control={form.control}
-                name="username"
+                name="fullName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel>Full Name</FormLabel>
                     <FormControl>
                       <Input {...field} className="border-dark-gray" />
                     </FormControl>
-                    <FormMessage className="text-error" />
+                    {form.formState.errors.fullName && (
+                      <FormMessage className="text-error">
+                        {form.formState.errors.fullName.message}
+                      </FormMessage>
+                    )}
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        className="border-dark-gray"
+                        type="email"
+                      />
+                    </FormControl>
+                    {form.formState.errors.email && (
+                      <FormMessage className="text-error">
+                        {form.formState.errors.email.message}
+                      </FormMessage>
+                    )}
                   </FormItem>
                 )}
               />
@@ -102,7 +155,11 @@ const Register = () => {
                         type="password"
                       />
                     </FormControl>
-                    <FormMessage className="text-error" />
+                    {form.formState.errors.password && (
+                      <FormMessage className="text-error">
+                        {form.formState.errors.password.message}
+                      </FormMessage>
+                    )}
                   </FormItem>
                 )}
               />
@@ -119,7 +176,11 @@ const Register = () => {
                         type="password"
                       />
                     </FormControl>
-                    <FormMessage className="text-error" />
+                    {form.formState.errors.confirmPassword && (
+                      <FormMessage className="text-error">
+                        {form.formState.errors.confirmPassword.message}
+                      </FormMessage>
+                    )}
                   </FormItem>
                 )}
               />
@@ -140,7 +201,7 @@ const Register = () => {
                       </FormControl>
                       <SelectContent className="border-dark-gray">
                         <SelectItem
-                          value="jobSeeker"
+                          value="jobseeker"
                           className="hover:bg-light-gray cursor-pointer"
                         >
                           Job Seeker
@@ -153,7 +214,11 @@ const Register = () => {
                         </SelectItem>
                       </SelectContent>
                     </Select>
-                    <FormMessage className="text-error" />
+                    {form.formState.errors.userType && (
+                      <FormMessage className="text-error">
+                        {form.formState.errors.userType.message}
+                      </FormMessage>
+                    )}
                   </FormItem>
                 )}
               />
@@ -161,7 +226,8 @@ const Register = () => {
           </CardContent>
           <CardFooter className="flex justify-end">
             <Button
-              // onClick={form.handleSubmit(onSubmit)}
+              // eslint-disable-next-line @typescript-eslint/no-misused-promises
+              onClick={form.handleSubmit(onSubmit)}
               className="bg-primary text-white hover:bg-primary-dark"
             >
               Register
