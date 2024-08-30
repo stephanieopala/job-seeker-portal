@@ -5,7 +5,7 @@ const Footer = () => {
     <footer className="bg-light-gray px-3 sm:px-20 py-10 flex justify-between">
       {/* <div className="sm:h-100 border-l-2 border-dark-gray mx-4"></div> */}
       <div>
-        <p>About</p>
+        <p className="text-primary">Kwetu Jobs</p>
         <p>
           <RouterLink to="/jobs" className="hover:text-primary">
             Jobs
