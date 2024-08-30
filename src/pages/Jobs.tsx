@@ -26,15 +26,23 @@ const Jobs = () => {
   >([]);
   const [errorMsg, setErrorMsg] = useState('');
   const [loading, setLoading] = useState(false);
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  // const [pageCount, setPageCount] = useState(0);
 
   useEffect(() => {
-    getJobs();
-  }, []);
+    getJobs(pagination.pageIndex, pagination.pageSize);
+  }, [pagination]);
 
-  const getJobs = async () => {
+  const getJobs = async (pageIndex: number, pageSize: number) => {
     try {
       setLoading(true);
-      const { data } = await supabase.from('jobs').select();
+      const { data } = await supabase
+        .from('jobs')
+        .select()
+        .range(pageIndex * pageSize, (pageIndex + 1) * pageSize - 1);
       console.log('jobs', data);
       setJobs(data || []);
     } catch (error) {
@@ -59,7 +67,13 @@ const Jobs = () => {
       <div className="w-full flex flex-col mb-10 h-full px-3 sm:px-20">
         <p className="my-4 font-bold">Jobs</p>
         <Card className="border-dark-gray border w-full h-full">
-          <DataTable data={jobs} columns={columns} />
+          <DataTable
+            data={jobs}
+            columns={columns}
+            pagination={pagination}
+            // pageCount={pageCount}
+            setPagination={setPagination}
+          />
           {displayUnavailable && <p>Jobs not available</p>}
           {displayLoading && <Skeleton />}
           {displayError && <p>{errorMsg}</p>}
