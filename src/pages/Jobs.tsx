@@ -8,11 +8,20 @@ import { Database } from '@/types/supabase';
 import { Card } from '@/components/ui/card';
 import { ColumnDef } from '@tanstack/react-table';
 import DataTable from '@/components/ui/data-table';
+import { Link } from 'react-router-dom';
 
 const columns: ColumnDef<Database['public']['Tables']['jobs']['Row']>[] = [
   {
     accessorKey: 'title',
     header: 'Title',
+    cell({ row }) {
+      return (
+        <Link
+          to={`/jobs/${row.original.id}`}
+          className="hover:text-primary"
+        >{`${row.original.title}`}</Link>
+      );
+    },
   },
   {
     accessorKey: 'location',
@@ -72,13 +81,15 @@ const Jobs = () => {
       <div className="w-full flex flex-col mb-10 h-full px-3 sm:px-20">
         <p className="my-4 font-bold">Jobs</p>
         <Card className="border-dark-gray border w-full h-full">
-          <DataTable
-            data={jobs}
-            columns={columns}
-            pagination={pagination}
-            rowCount={pageCount}
-            setPagination={setPagination}
-          />
+          {!displayUnavailable && !displayLoading && !displayError && (
+            <DataTable
+              data={jobs}
+              columns={columns}
+              pagination={pagination}
+              rowCount={pageCount}
+              setPagination={setPagination}
+            />
+          )}
           {displayUnavailable && <p>Jobs not available</p>}
           {displayLoading && <Skeleton />}
           {displayError && <p>{errorMsg}</p>}
