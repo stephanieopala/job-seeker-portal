@@ -28,23 +28,24 @@ const Jobs = () => {
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: 2,
   });
-  // const [pageCount, setPageCount] = useState(0);
+  const [pageCount, setPageCount] = useState(0);
 
   useEffect(() => {
     getJobs(pagination.pageIndex, pagination.pageSize);
   }, [pagination]);
 
   const getJobs = async (pageIndex: number, pageSize: number) => {
+    setLoading(true);
     try {
-      setLoading(true);
-      const { data } = await supabase
+      const { data, count } = await supabase
         .from('jobs')
-        .select()
+        .select('*', { count: 'exact' })
         .range(pageIndex * pageSize, (pageIndex + 1) * pageSize - 1);
-      console.log('jobs', data);
+      console.log('jobs', data, count);
       setJobs(data || []);
+      setPageCount(count || 0);
     } catch (error) {
       if (error instanceof Error) {
         console.log(error);
@@ -71,7 +72,7 @@ const Jobs = () => {
             data={jobs}
             columns={columns}
             pagination={pagination}
-            // pageCount={pageCount}
+            rowCount={pageCount}
             setPagination={setPagination}
           />
           {displayUnavailable && <p>Jobs not available</p>}
