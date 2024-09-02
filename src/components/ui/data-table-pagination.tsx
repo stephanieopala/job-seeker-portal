@@ -22,7 +22,7 @@ interface DataTablePaginationProps<TData> {
 }
 function DataTablePagination<TData>({
   table,
-  pageSizeOptions = [2, 4], //[10, 20, 30, 40, 50]
+  pageSizeOptions = [10, 20, 30, 40, 50],
   setPagination,
 }: DataTablePaginationProps<TData>) {
   return (

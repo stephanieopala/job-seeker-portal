@@ -18,6 +18,10 @@ const columns: ColumnDef<Database['public']['Tables']['jobs']['Row']>[] = [
     accessorKey: 'location',
     header: 'Location',
   },
+  {
+    accessorKey: 'closing_date',
+    header: 'Application Deadline',
+  },
 ];
 
 const Jobs = () => {
@@ -28,7 +32,7 @@ const Jobs = () => {
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 2,
+    pageSize: 10,
   });
   const [pageCount, setPageCount] = useState(0);
 

@@ -47,7 +47,7 @@ function DataTable<TData, TValue>({
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
+            <TableRow key={headerGroup.id} className="border-dark-gray">
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead key={header.id}>
@@ -68,6 +68,7 @@ function DataTable<TData, TValue>({
             <TableRow
               key={row.id}
               data-state={row.getIsSelected() && 'selected'}
+              className="border-dark-gray"
             >
               {row.getVisibleCells().map((cell) => (
                 <TableCell key={cell.id}>
