@@ -1,4 +1,4 @@
-import { type Table } from '@tanstack/react-table';
+import { type Table, PaginationState } from '@tanstack/react-table';
 import { Button } from './button';
 import {
   ArrowLeft,
@@ -6,14 +6,24 @@ import {
   ArrowRight,
   ArrowRightFromLine,
 } from 'lucide-react';
-
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
   pageSizeOptions?: number[];
+  setPagination: (
+    updater: PaginationState | ((prev: PaginationState) => PaginationState)
+  ) => void;
 }
 function DataTablePagination<TData>({
   table,
   pageSizeOptions = [10, 20, 30, 40, 50],
+  setPagination,
 }: DataTablePaginationProps<TData>) {
   return (
     <div className="flex w-full flex-col items-center justify-between gap-4 px-2 py-1 overflow-auto border-t-2 border-light-gray">
@@ -61,19 +71,30 @@ function DataTablePagination<TData>({
           >
             <ArrowRightFromLine className="h-4 w-4" />
           </Button>
-          <select
-            value={table.getState().pagination.pageSize}
-            onChange={(e) => {
-              console.log('size', e.target.value);
-              table.setPageSize(Number(e.target.value));
+          <Select
+            value={`${table.getState().pagination.pageSize}`}
+            onValueChange={(value) => {
+              console.log('size', value);
+              // table.setPageSize(Number(value));
+              const newPageSize = Number(value);
+              setPagination((prev) => ({
+                ...prev,
+                pageSize: newPageSize,
+                pageIndex: 0,
+              }));
             }}
           >
-            {pageSizeOptions.map((size) => (
-              <option key={size} value={size}>
-                {size}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="h-8 w-[70px">
+              <SelectValue placeholder={table.getState().pagination.pageSize} />
+            </SelectTrigger>
+            <SelectContent side="top">
+              {pageSizeOptions.map((size) => (
+                <SelectItem key={size} value={`${size}`}>
+                  {size}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </div>
     </div>

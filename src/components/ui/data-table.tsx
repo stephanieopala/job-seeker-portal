@@ -2,7 +2,7 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
-  getPaginationRowModel,
+  // getPaginationRowModel,
   useReactTable,
   PaginationState,
 } from '@tanstack/react-table';
@@ -18,7 +18,7 @@ import DataTablePagination from './data-table-pagination';
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  // pageCount: number;
+  rowCount: number;
   pagination: PaginationState;
   setPagination: (
     updater: PaginationState | ((prev: PaginationState) => PaginationState)
@@ -28,20 +28,18 @@ interface DataTableProps<TData, TValue> {
 function DataTable<TData, TValue>({
   columns,
   data,
-  // pageCount,
+  rowCount,
   pagination,
   setPagination,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
-    // pageCount: -1,
+    rowCount,
     state: { pagination },
-    onPaginationChange: (updater) => {
-      setPagination((prev) => ({ ...prev, ...updater }));
-    },
-    getPaginationRowModel: getPaginationRowModel(),
+    getCoreRowModel: getCoreRowModel(),
+    onPaginationChange: setPagination,
+    // getPaginationRowModel: getPaginationRowModel(),
     manualPagination: true,
   });
   return (
@@ -49,7 +47,7 @@ function DataTable<TData, TValue>({
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
+            <TableRow key={headerGroup.id} className="border-dark-gray">
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead key={header.id}>
@@ -70,6 +68,7 @@ function DataTable<TData, TValue>({
             <TableRow
               key={row.id}
               data-state={row.getIsSelected() && 'selected'}
+              className="border-dark-gray"
             >
               {row.getVisibleCells().map((cell) => (
                 <TableCell key={cell.id}>
@@ -80,7 +79,7 @@ function DataTable<TData, TValue>({
           ))}
         </TableBody>
       </Table>
-      <DataTablePagination table={table} />
+      <DataTablePagination table={table} setPagination={setPagination} />
     </div>
   );
 }
